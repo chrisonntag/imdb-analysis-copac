@@ -25,7 +25,7 @@ python3 -m venv env
 
 Choose the environment.
 ```
-source env/bin/act
+source env/bin/activate
 ```
 
 Install all requirements.
