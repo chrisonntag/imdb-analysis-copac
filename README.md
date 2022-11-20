@@ -11,5 +11,37 @@ Just clone this repository and install packages with pip from the ```requirement
 of the code from the TUDataset repo so that we don't have to deal with the correct version numnber of torch 
 since we don't need torch for our uses anyway. 
 
+Clone the repo.
+
+```
+git clone https://github.com/chrisonntag/imdb-analysis-copac.git
+```
+(or use some UI client)
+
+Create a virtual environement. This creates a directory ```env/``` where all the dependencies will be installed.
+```
+python3 -m venv env
+```
+
+Choose the environment.
+```
+source env/bin/act
+```
+
+Install all requirements.
+```
+pip install -r requirements.txt
+```
+
+Open Jupyter lab.
+```
+jupyter lab
+```
+
+Everything should work from hereon since all needed artifacts are part of this repo as well. 
+You can find the data analysis notebook for the exploratory part and our COPAC implementation 
+in ```/analysis/eda.ipynb```. 
+
+Feel free to move the COPAC implementation into its own module. 
 
 
