@@ -44,4 +44,26 @@ in ```/analysis/eda.ipynb```.
 
 Feel free to move the COPAC implementation into its own module. 
 
+## Contribution
+Send me your GitHub username and i'll add you to the repository as a contributor. 
+Clone the repository and switch to the development branch
+
+```
+git checkout development
+```
+
+From there you can create a new branch with 
+```
+git checkout -b YourBranchName
+```
+
+Do all your changes here and push it to GitHub with
+
+```
+git push origin YourBranchName
+```
+
+We can then merge it to our development/main branch. Alternatively merge it locally into the development branch. 
+
+
 
