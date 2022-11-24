@@ -323,8 +323,7 @@ def _initialize_nrkmeans_parameters(X, n_clusters, V, m, P, centers, max_iter, r
             if k > 1:
                 P_subspace = P[i]
                 cropped_X = np.matmul(X, V[:, P_subspace])
-                centers_cropped = kpp(cropped_X, k, row_norms(
-                    cropped_X, squared=True), random_state)
+                centers_cropped, indices = kpp(cropped_X, n_clusters=k, x_squared_norms=row_norms(cropped_X, squared=True), random_state=0)
                 labels, _ = pairwise_distances_argmin_min(
                     X=cropped_X, Y=centers_cropped, metric='euclidean', metric_kwargs={'squared': True})
 
