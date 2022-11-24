@@ -8,7 +8,8 @@ SubKmeans is a special case of NrKmeans if there is only a single clustering con
 import numpy as np
 from scipy.stats import ortho_group
 from sklearn.utils import check_random_state
-from sklearn.cluster.k_means_ import _k_init as kpp
+#from sklearn.cluster.k_means_ import _k_init as kpp
+from sklearn.cluster import kmeans_plusplus as kpp
 from sklearn.utils.extmath import row_norms
 from sklearn.metrics.pairwise import pairwise_distances_argmin_min
 from sklearn.metrics import normalized_mutual_info_score as nmi
