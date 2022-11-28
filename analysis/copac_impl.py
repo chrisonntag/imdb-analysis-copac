@@ -1,18 +1,16 @@
-#!/usr/bin/env python
-# coding: utf-8
+"""COPAC implementation (COrrelation PArtition Clustering)
 
-# ... aims at improved robustness, completeness, usability, and efficiency.
-
+which aims at improved robustness, completeness, usability, and efficiency.
+"""
 
 import numpy as np
 from sklearn.neighbors import NearestNeighbors
 from sklearn.cluster import DBSCAN
 
-# # First Part (Local Correlation & Distance)
-
-# ### Covariance Matrix
 
 def covariance_matrix(m):
+    """Computes the Covariance matrix"""
+
     length = len(m)
     cols = m.shape[1]
     mean = np.mean(m, axis=0)
@@ -25,27 +23,27 @@ def covariance_matrix(m):
     return cov
 
 
-# ### Local correlation dimensionality
-
 def loc_corr_dim(eigenvals, alpha = 0.85):
-       all_eigs = sum(eigenvals)
-       corr_dim = 0
-       
-       for i in range(1, len(eigenvals)):
-           ratio = sum(eigenvals[:i]) / all_eigs
-           if ratio >= alpha:
-               corr_dim = i
-               break
+    """The local correlation dimensionality"""
 
-       if corr_dim == 0:
-            corr_dim = 1
+    all_eigs = sum(eigenvals)
+    corr_dim = 0
 
-       return corr_dim
+    for i in range(1, len(eigenvals)):
+        ratio = sum(eigenvals[:i]) / all_eigs
+        if ratio >= alpha:
+            corr_dim = i
+            break
 
+    if corr_dim == 0:
+        corr_dim = 1
 
-# ### Correlation distance matrix
+    return corr_dim
+
 
 def corr_dist_matrix(p, corr_dim, eigenvals, eigenvecs):
+    """Correlation distance matrix"""
+
     length = len(eigenvals)
     adapted_eig_mat = np.zeros([length, length])
     
@@ -56,17 +54,34 @@ def corr_dist_matrix(p, corr_dim, eigenvals, eigenvecs):
     return eigenvecs @ adapted_eig_mat @ eigenvecs.T
 
 
-# ### Correlation distance measure
-
 def corr_dist_measure(p, q, m):
+    """The correlation distance measure"""
+
     return np.sqrt((p - q) @ m @ (p - q).T)
 
 
-# # Second Part (GBDSCAN)
-# ## copac
-
 def copac(X, k=2, mu=5, eps=0.5, alpha=0.85):
-    
+    """Performs correlation clustering using COPAC algorithm.
+
+    Parameters
+    ----------
+    X: numpy.array
+        The feature array.
+    k: int, default=2
+        The number of points considered to compute the neighborhood of a point P. It turned out that for k=3, d was robust in all our tests. In general, setting 3 · d ≤ k seems to be a reasonable suggestion.
+    mu: int, default=5
+        The parameter µ specifies the minimum number of points in a cluster and, therefore, is quite intuitive. Obviously, µ ≤ k should hold.
+    eps: float, default=0.5
+        The parameter ε is used to specify the neighborhood predicate and can be choosen as proposed in [6] and [13].
+    alpha: float, default=0.85
+        Computes the correlation dimensionality λP of a point P ∈ D. As discussed above, this parameter is very robust in the range between 0.8 ≤ α ≤ 0.9. Thus, we choose α = 0.85 throughout all our experiments.
+
+    Returns
+    -------
+    labels: numpy.array
+        The labeled cluster array.
+    """
+
     n, d = X.shape
     y = np.empty(n)
     lambda_ = np.empty(0)
@@ -157,19 +172,4 @@ def copac(X, k=2, mu=5, eps=0.5, alpha=0.85):
             pass
         
     return y
-        
-
-
-
-# ## Parameter estimation
-
-# There are four parameters: k, µ, ε and α
-# 
-# - k specifies the number of points considered to compute the neighborhood of a point P (It turned out that setting k = 3 · d was robust in all our tests; In general, setting 3 · d ≤ k seems to be a reasonable suggestion.)
-# - The parameter µ specifies the minimum number of points in a cluster and, therefore, is quite intuitive. Obviously, µ ≤ k should hold.
-# - The parameter ε is used to specify the neighborhood predicate and can be choosen as proposed in [6]
-#     and [13].
-# - Let us note that we have in fact a fourth parameter α to compute the correlation dimensionality λP of a point P ∈ D. As discussed above, this parameter is very robust in the range between 0.8 ≤ α ≤ 0.9. Thus, we choose α = 0.85 throughout all our experiments.
-#     
-
 
